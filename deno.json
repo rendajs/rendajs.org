@@ -1,0 +1,19 @@
+{
+	"compilerOptions": {
+		"jsx": "react-jsx",
+		"jsxImportSource": "https://esm.sh/preact@10.13.2"
+	},
+	"imports": {
+		"$preact": "https://esm.sh/preact@10.11.0",
+		"$preact/": "https://esm.sh/preact@10.11.0/",
+		"$std/": "https://deno.land/std@0.182.0/"
+	},
+	"fmt": {
+		"options": {
+			"indentWidth": 4,
+			"useTabs": true,
+			"lineWidth": 300,
+			"proseWrap": "preserve"
+		}
+	}
+}
