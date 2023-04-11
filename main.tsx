@@ -1,19 +1,76 @@
-import { serve } from "$std/http/server.ts";
+import type { JSX } from "$preact";
+import { isValidElement } from "$preact";
+import { serve, Status } from "$std/http/mod.ts";
 import { renderToString } from "npm:preact-render-to-string@6.0.2";
+import renderToStringPretty from "npm:preact-render-to-string@6.0.2/jsx";
+import { Header } from "./site/components/Header.tsx";
+import { manual } from "./site/routes/manual.tsx";
+import { landingPage } from "./site/routes/landingPage.tsx";
+import { notFoundHandler } from "./site/routes/404.tsx";
 
 const port = parseInt(Deno.env.get("PORT") || "0", 10);
+const pretty = Deno.env.get("PRETTY") === "true";
 
-const page = (
-	<div>
-		<p>As you can see this page is very much under construction.</p>
-		<p>
-			Why don't you head over to <a href="https://renda.studio/">renda.studio</a> or <a href="https://github.com/rendajs">Renda on GitHub</a>.
-		</p>
-	</div>
-);
+export interface RouteResult {
+	redirect?: string;
+	page?: JSX.Element;
+	status?: Status;
+}
+export type RouteHandlerResult = JSX.Element | null | RouteResult;
 
-serve(() => {
-	return new Response(renderToString(page), {
+export interface RouteHandler {
+	pattern: URLPattern;
+	handler: (request: Request, patternResult: URLPatternResult) => RouteHandlerResult | Promise<RouteHandlerResult>;
+}
+
+const handlers: Set<RouteHandler> = new Set();
+handlers.add(landingPage);
+handlers.add(manual);
+
+serve(async (request) => {
+	let page = null;
+	for (const handler of handlers) {
+		const result = handler.pattern.exec(request.url);
+		if (result) {
+			page = await handler.handler(request, result);
+			break;
+		}
+	}
+	if (!page) {
+		page = notFoundHandler();
+	}
+	let status = Status.OK;
+	if (!isValidElement(page)) {
+		const result = page as RouteResult;
+		if (result.redirect) {
+			return new Response(null, {
+				status: Status.Found,
+				headers: {
+					location: result.redirect,
+				},
+			});
+		}
+		if (result.status) {
+			status = result.status;
+		}
+		page = result.page;
+	}
+	if (!page) {
+		throw new Error("Assertion failed, no page was returned from handler.");
+	}
+	const renderFunction = pretty ? renderToStringPretty : renderToString;
+	const rendered = renderFunction(
+		<html>
+			<head></head>
+			<body>
+				<Header />
+				{page}
+			</body>
+		</html>,
+	);
+
+	return new Response(rendered, {
+		status,
 		headers: {
 			"content-type": "text/html; charset=utf-8",
 		},
