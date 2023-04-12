@@ -7,3 +7,17 @@
 .manual-page > main {
 	max-width: 600px;
 }
+
+.manual-page .note {
+	background: #3472ff33;
+	border: 1px solid #3472ff4f;
+	padding: 10px;
+	border-radius: 5px;
+}
+
+.manual-page .note > p:first-child {
+	margin-top: 0;
+}
+.manual-page .note > p:last-child {
+	margin-bottom: 0;
+}

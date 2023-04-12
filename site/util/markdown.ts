@@ -3,10 +3,12 @@ import type { Content, Root } from "npm:@types/mdast@3.0.11";
 import { visit } from "npm:unist-util-visit@4.1.2";
 import find from "npm:unist-util-find@1.0.2";
 import { unified } from "npm:unified@10.1.2";
+import gfm from "npm:remark-gfm@3.0.1";
 import remarkParse from "npm:remark-parse@10.0.1";
 import remarkStringify from "npm:remark-stringify@10.0.2";
 import remarkRehype from "npm:remark-rehype@10.1.0";
 import rehypeStringify from "npm:rehype-stringify@9.0.3";
+import { remarkNotesPlugin } from "./remarkNotesPlugin.ts";
 import { assert } from "$std/testing/asserts.ts";
 
 let currentRewriteUrlHook = (url: string) => url;
@@ -22,7 +24,9 @@ const remarkRewriteUrls: Plugin<[], Root, Root> = function () {
 
 const mdProcessor = unified()
 	.use(remarkParse) // parse markdown into an ast (mdast)
+	.use(gfm) // GitHub flavored markdown is required for hints
 	.use(remarkRewriteUrls) // rewrite urls
+	.use(remarkNotesPlugin) // add support for hints
 	.use(remarkRehype) // convert mdast to html ast (hast)
 	.use(rehypeStringify); // convert hast to html string
 
