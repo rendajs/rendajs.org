@@ -11,7 +11,7 @@ interface TableOfContentsOptions {
 export function TableOfContents({ index }: TableOfContentsOptions) {
 	if (!index.children) return <nav></nav>;
 	return (
-		<nav>
+		<nav class="table-of-contents">
 			<ul>
 				{getChildren(index.children)}
 			</ul>

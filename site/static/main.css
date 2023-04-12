@@ -1,0 +1,36 @@
+:root{
+	--bg-color: #1b1b1b;
+	--text-color: #eee;
+	--accent-color: #ff7600;
+}
+@media(prefers-color-scheme: light){
+	:root{
+		--bg-color: #fff;
+		--text-color: #505050;
+		--accent-color: #dd2101;
+	}
+}
+
+html, body {
+	background-color: var(--bg-color);
+	color: var(--text-color);
+	font-family: ui-sans-serif, system-ui, sans-serif;
+	margin: 0;
+}
+
+a {
+	text-decoration: none;
+	color: var(--accent-color);
+}
+a:hover {
+	opacity: 0.6;
+}
+
+header nav {
+	margin: 20px 0px;
+}
+
+header nav a {
+	color: var(--text-color);
+	margin: 10px;
+}

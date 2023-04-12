@@ -1,3 +1,4 @@
+import type { JSX } from "$preact";
 import type { RouteHandler, RouteHandlerResult } from "../../main.tsx";
 import { Markdown } from "../components/Markdown.tsx";
 import * as path from "$std/path/mod.ts";
@@ -203,27 +204,39 @@ export const manual: RouteHandler = {
 			return resolveManualPathToUrl(linkPath);
 		}
 
-		return (
-			<div>
-				<TableOfContents index={index} />
-				<main>
+		return {
+			cssUrls: ["manual.css"],
+			page: (
+				<ManualPage index={index}>
 					<Markdown markdown={markdown} rewriteUrlHook={rewriteUrlHook} />
-				</main>
-			</div>
-		);
+				</ManualPage>
+			),
+		};
 	},
 };
 
 function getNotFound(index: TableOfContentsIndex): RouteHandlerResult {
 	return {
 		status: 404,
+		cssUrls: ["manual.css"],
 		page: (
-			<div>
-				<TableOfContents index={index} />
-				<main>
-					<h1>404</h1>
-				</main>
-			</div>
+			<ManualPage index={index}>
+				<h1>404 - Not Found</h1>
+			</ManualPage>
 		),
 	};
+}
+
+function ManualPage({ index, children }: {
+	index: TableOfContentsIndex;
+	children: JSX.Element;
+}) {
+	return (
+		<div class="manual-page">
+			<TableOfContents index={index} />
+			<main>
+				{children}
+			</main>
+		</div>
+	);
 }

@@ -15,10 +15,12 @@ function HeaderLink({ href, text }: {
 export function Header() {
 	return (
 		<header>
-			<HeaderLink href="/" text="Home" />
-			<HeaderLink href="/manual" text="Manual" />
-			<HeaderLink href="https://renda.studio" text="Studio" />
-			<HeaderLink href="https://github.com/rendajs" text="GitHub" />
+			<nav>
+				<HeaderLink href="/" text="Home" />
+				<HeaderLink href="/manual" text="Manual" />
+				<HeaderLink href="https://renda.studio" text="Studio" />
+				<HeaderLink href="https://github.com/rendajs" text="GitHub" />
+			</nav>
 		</header>
 	);
 }

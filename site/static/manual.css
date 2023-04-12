@@ -1,0 +1,9 @@
+.manual-page {
+	display: flex;
+	justify-content: center;
+	gap: 20px;
+}
+
+.manual-page > main {
+	max-width: 600px;
+}

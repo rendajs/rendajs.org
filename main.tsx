@@ -4,8 +4,9 @@ import { serve, Status } from "$std/http/mod.ts";
 import { renderToString } from "npm:preact-render-to-string@6.0.2";
 import renderToStringPretty from "npm:preact-render-to-string@6.0.2/jsx";
 import { Header } from "./site/components/Header.tsx";
-import { manual } from "./site/routes/manual.tsx";
 import { landingPage } from "./site/routes/landingPage.tsx";
+import { staticHandler } from "./site/routes/static.ts";
+import { manual } from "./site/routes/manual.tsx";
 import { notFoundHandler } from "./site/routes/404.tsx";
 
 const port = parseInt(Deno.env.get("PORT") || "0", 10);
@@ -15,8 +16,9 @@ export interface RouteResult {
 	redirect?: string;
 	page?: JSX.Element;
 	status?: Status;
+	cssUrls?: string[];
 }
-export type RouteHandlerResult = JSX.Element | null | RouteResult;
+export type RouteHandlerResult = JSX.Element | null | RouteResult | Response;
 
 export interface RouteHandler {
 	pattern: URLPattern;
@@ -25,10 +27,14 @@ export interface RouteHandler {
 
 const handlers: Set<RouteHandler> = new Set();
 handlers.add(landingPage);
+handlers.add(staticHandler);
 handlers.add(manual);
 
 serve(async (request) => {
 	let page = null;
+	const cssUrls = [
+		"main.css",
+	];
 	for (const handler of handlers) {
 		const result = handler.pattern.exec(request.url);
 		if (result) {
@@ -38,6 +44,9 @@ serve(async (request) => {
 	}
 	if (!page) {
 		page = notFoundHandler();
+	}
+	if (page instanceof Response) {
+		return page;
 	}
 	let status = Status.OK;
 	if (!isValidElement(page)) {
@@ -53,6 +62,7 @@ serve(async (request) => {
 		if (result.status) {
 			status = result.status;
 		}
+		cssUrls.push(...result.cssUrls || []);
 		page = result.page;
 	}
 	if (!page) {
@@ -61,7 +71,11 @@ serve(async (request) => {
 	const renderFunction = pretty ? renderToStringPretty : renderToString;
 	const rendered = renderFunction(
 		<html>
-			<head></head>
+			<head>
+				{cssUrls.map((url) => {
+					return <link rel="stylesheet" href={`/static/${url}`} type="text/css" />;
+				})}
+			</head>
 			<body>
 				<Header />
 				{page}
