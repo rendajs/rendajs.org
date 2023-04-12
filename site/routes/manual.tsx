@@ -2,6 +2,7 @@ import type { RouteHandler } from "../../main.tsx";
 import { Markdown } from "../components/Markdown.tsx";
 import * as path from "$std/path/mod.ts";
 import * as yaml from "$std/yaml/mod.ts";
+import { isRelativeUrl } from "../util/isRelativeUrl.ts";
 
 interface ManualIndex {
 	mainPage?: string;
@@ -93,6 +94,7 @@ export const manual: RouteHandler = {
 		}
 
 		function rewriteUrlHook(url: string) {
+			if (!isRelativeUrl(url)) return url;
 			const dirname = path.dirname(absoluteMarkdownPath);
 			const linkPath = path.resolve(dirname, url);
 			console.log({ url, linkPath });
