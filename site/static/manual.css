@@ -21,3 +21,14 @@
 .manual-page .note > p:last-child {
 	margin-bottom: 0;
 }
+
+code {
+	background: #383838;
+	border-radius: 3px;
+	padding: 0.1em 0.4em;
+}
+@media(prefers-color-scheme: light){
+	code {
+		background: red;
+	}
+}
