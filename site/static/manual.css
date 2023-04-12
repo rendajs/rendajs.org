@@ -29,6 +29,7 @@ code {
 }
 @media(prefers-color-scheme: light){
 	code {
-		background: red;
+		background: #e5e5e5;
+		color: #3a3a3a;
 	}
 }
