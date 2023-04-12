@@ -44,7 +44,7 @@ export const manual: RouteHandler = {
 	}),
 	async handler(request, patternResult) {
 		const urlPath = patternResult.pathname.groups.path;
-		let markdownPath = resolveManualUrlToPath(manualContentDir, urlPath);
+		let absoluteMarkdownPath = resolveManualUrlToPath(manualContentDir, urlPath);
 		const potentialDirPath = resolveManualUrlToPath(manualContentDir, urlPath, { appendMd: false });
 		let statResult;
 		try {
@@ -69,7 +69,7 @@ export const manual: RouteHandler = {
 			}
 			const indexData = yaml.parse(index) as ManualIndex;
 			if (indexData.mainPage) {
-				markdownPath = resolveManualUrlToPath(potentialDirPath, indexData.mainPage);
+				absoluteMarkdownPath = resolveManualUrlToPath(potentialDirPath, indexData.mainPage);
 			} else {
 				const firstPage = indexData.pages[0];
 				if (!firstPage) {
@@ -84,7 +84,7 @@ export const manual: RouteHandler = {
 		}
 		let markdown;
 		try {
-			markdown = await Deno.readTextFile(markdownPath);
+			markdown = await Deno.readTextFile(absoluteMarkdownPath);
 		} catch (e) {
 			if (e instanceof Deno.errors.NotFound) {
 				return null;
@@ -92,9 +92,16 @@ export const manual: RouteHandler = {
 			throw e;
 		}
 
+		function rewriteUrlHook(url: string) {
+			const dirname = path.dirname(absoluteMarkdownPath);
+			const linkPath = path.resolve(dirname, url);
+			console.log({ url, linkPath });
+			return resolveManualPathToUrl(linkPath);
+		}
+
 		return (
 			<main>
-				<Markdown markdown={markdown} />
+				<Markdown markdown={markdown} rewriteUrlHook={rewriteUrlHook} />
 			</main>
 		);
 	},
