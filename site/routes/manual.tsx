@@ -1,4 +1,4 @@
-import type { RouteHandler } from "../../main.tsx";
+import type { RouteHandler, RouteHandlerResult } from "../../main.tsx";
 import { Markdown } from "../components/Markdown.tsx";
 import * as path from "$std/path/mod.ts";
 import * as yaml from "$std/yaml/mod.ts";
@@ -175,13 +175,15 @@ export const manual: RouteHandler = {
 	async handler(request, patternResult) {
 		const urlPath = patternResult.pathname.groups.path;
 		const resolveData = await resolveManualPath(manualContentDir, urlPath);
-		if (!resolveData) return null;
+		const index = await buildIndex(path.resolve(manualContentDir, INDEX_FILENAME));
+
+		if (!resolveData) return getNotFound(index);
 		if (resolveData.redirectPath) {
 			return {
 				redirect: resolveManualPathToUrl(resolveData.redirectPath),
 			};
 		}
-		if (!resolveData.displayPath) return null;
+		if (!resolveData.displayPath) return getNotFound(index);
 		const displayPath = resolveData.displayPath;
 
 		let markdown;
@@ -189,7 +191,7 @@ export const manual: RouteHandler = {
 			markdown = await Deno.readTextFile(displayPath);
 		} catch (e) {
 			if (e instanceof Deno.errors.NotFound) {
-				return null;
+				return getNotFound(index);
 			}
 			throw e;
 		}
@@ -201,8 +203,6 @@ export const manual: RouteHandler = {
 			return resolveManualPathToUrl(linkPath);
 		}
 
-		const index = await buildIndex(path.resolve(manualContentDir, INDEX_FILENAME));
-
 		return (
 			<div>
 				<TableOfContents index={index} />
@@ -213,3 +213,17 @@ export const manual: RouteHandler = {
 		);
 	},
 };
+
+function getNotFound(index: TableOfContentsIndex): RouteHandlerResult {
+	return {
+		status: 404,
+		page: (
+			<div>
+				<TableOfContents index={index} />
+				<main>
+					<h1>404</h1>
+				</main>
+			</div>
+		),
+	};
+}
