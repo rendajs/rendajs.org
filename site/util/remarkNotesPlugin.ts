@@ -28,7 +28,7 @@ function createNoteNode(noteType: string, children: PhrasingContent[] = []) {
 		type: "wrapper",
 		children,
 		data: {
-			hName: "div",
+			hName: "aside",
 			hProperties: {
 				class: noteType,
 			},
