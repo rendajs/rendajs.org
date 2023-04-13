@@ -1,11 +1,24 @@
 .manual-page {
 	display: flex;
 	justify-content: center;
-	gap: 20px;
+	gap: 30px;
+	position: relative;
+	margin: 0 20px;
 }
 
 .manual-page > main {
 	max-width: 600px;
+	flex-grow: 1;
+}
+
+@media (max-width: 900px) {
+	.manual-page {
+		flex-direction: column;
+	}
+
+	.manual-page > main {
+		max-width: 100%;
+	}
 }
 
 .manual-page .note {
@@ -27,11 +40,25 @@ code {
 	border-radius: 3px;
 	padding: 0.1em 0.4em;
 }
-@media(prefers-color-scheme: light){
+@media (prefers-color-scheme: light) {
 	code {
 		background: #e5e5e5;
 		color: #3a3a3a;
 	}
+}
+
+.table-of-contents {
+	min-width: max-content;
+}
+
+.table-of-contents > ul {
+	position: sticky;
+	top: 0;
+	margin: 0;
+	padding: 0;
+	padding-top: 20px;
+	overflow-y: auto;
+	max-height: 100vh;
 }
 
 .table-of-contents a {
@@ -44,10 +71,6 @@ code {
 
 .table-of-contents ul {
 	list-style: none;
-}
-
-.table-of-contents > ul {
-	padding: 0;
 }
 
 .table-of-contents li {
