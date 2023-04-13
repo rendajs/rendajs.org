@@ -17,6 +17,7 @@ export interface RouteResult {
 	page?: JSX.Element;
 	status?: Status;
 	cssUrls?: string[];
+	pageTitle?: string;
 }
 export type RouteHandlerResult = JSX.Element | null | RouteResult | Response;
 
@@ -35,6 +36,7 @@ serve(async (request) => {
 	const cssUrls = [
 		"main.css",
 	];
+	let pageTitle = "Renda";
 	for (const handler of handlers) {
 		const result = handler.pattern.exec(request.url);
 		if (result) {
@@ -62,6 +64,9 @@ serve(async (request) => {
 		if (result.status) {
 			status = result.status;
 		}
+		if (result.pageTitle) {
+			pageTitle = result.pageTitle;
+		}
 		cssUrls.push(...result.cssUrls || []);
 		page = result.page;
 	}
@@ -73,6 +78,7 @@ serve(async (request) => {
 		<html>
 			<head>
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
+				<title>{pageTitle}</title>
 				{cssUrls.map((url) => {
 					return <link rel="stylesheet" href={`/static/${url}`} type="text/css" />;
 				})}

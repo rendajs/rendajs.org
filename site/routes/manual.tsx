@@ -215,8 +215,13 @@ export const manual: RouteHandler = {
 			return resolveManualPathToUrl(linkPath);
 		}
 
+		let pageTitle = "Renda Manual";
+		const markdownTitle = getTitle(markdown);
+		if (markdownTitle) pageTitle = markdownTitle + " - " + pageTitle;
+
 		return {
 			cssUrls: ["manual.css"],
+			pageTitle,
 			page: (
 				<ManualPage index={index} activePath={"/manual/" + urlPath}>
 					<Markdown markdown={markdown} rewriteUrlHook={rewriteUrlHook} />
@@ -230,6 +235,7 @@ function getNotFound(index: TableOfContentsIndex): RouteHandlerResult {
 	return {
 		status: 404,
 		cssUrls: ["manual.css"],
+		pageTitle: "Renda Manual - 404",
 		page: (
 			<ManualPage index={index}>
 				<h1>404 - Not Found</h1>
