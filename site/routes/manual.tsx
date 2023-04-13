@@ -120,9 +120,16 @@ async function getIndexPageData(absoluteIndexPath: string, relativeMarkdownPath:
 	let title = "";
 	let destination: string | null = null;
 	if (resolveResult?.displayPath) {
-		const markdown = await Deno.readTextFile(resolveResult.displayPath);
-		title = getTitle(markdown);
-		destination = resolveManualPathToUrl(resolveResult.displayPath);
+		let markdown;
+		try {
+			markdown = await Deno.readTextFile(resolveResult.displayPath);
+		} catch {
+			title = "NOT FOUND";
+		}
+		if (markdown) {
+			title = getTitle(markdown);
+			destination = resolveManualPathToUrl(resolveResult.displayPath);
+		}
 	}
 	return {
 		resolveResult,
