@@ -6,40 +6,43 @@ export interface TableOfContentsIndex {
 
 interface TableOfContentsOptions {
 	index: TableOfContentsIndex;
+	activePath?: string;
 }
 
-export function TableOfContents({ index }: TableOfContentsOptions) {
-	if (!index.children) return <nav></nav>;
+export function TableOfContents(options: TableOfContentsOptions) {
+	if (!options.index.children) return <nav></nav>;
 	return (
 		<nav class="table-of-contents">
 			<ul>
-				{getChildren(index.children)}
+				{getChildren(options)}
 			</ul>
 		</nav>
 	);
 }
 
-function TableOfContentsItem({ index }: TableOfContentsOptions) {
+function TableOfContentsItem(options: TableOfContentsOptions) {
 	const children = [];
-	if (index.destination) {
+	if (options.index.destination) {
+		const active = options.index.destination == options.activePath;
 		children.push(
-			<a href={index.destination}>{index.title}</a>,
+			<a href={options.index.destination} class={active ? "active" : ""}>{options.index.title}</a>,
 		);
 	} else {
-		children.push(index.title);
+		children.push(options.index.title);
 	}
-	if (index.children) {
+	if (options.index.children) {
 		children.push(
 			<ul>
-				{getChildren(index.children)}
+				{getChildren(options)}
 			</ul>,
 		);
 	}
 	return <li>{children}</li>;
 }
 
-function getChildren(children: TableOfContentsIndex[]) {
-	return children.map((child) => {
-		return <TableOfContentsItem index={child} />;
+function getChildren(options: TableOfContentsOptions) {
+	if (!options.index.children) return [];
+	return options.index.children.map((child) => {
+		return <TableOfContentsItem index={child} activePath={options.activePath} />;
 	});
 }

@@ -218,7 +218,7 @@ export const manual: RouteHandler = {
 		return {
 			cssUrls: ["manual.css"],
 			page: (
-				<ManualPage index={index}>
+				<ManualPage index={index} activePath={"/manual/" + urlPath}>
 					<Markdown markdown={markdown} rewriteUrlHook={rewriteUrlHook} />
 				</ManualPage>
 			),
@@ -238,13 +238,14 @@ function getNotFound(index: TableOfContentsIndex): RouteHandlerResult {
 	};
 }
 
-function ManualPage({ index, children }: {
+function ManualPage({ index, children, activePath }: {
 	index: TableOfContentsIndex;
 	children: JSX.Element;
+	activePath?: string;
 }) {
 	return (
 		<div class="manual-page">
-			<TableOfContents index={index} />
+			<TableOfContents index={index} activePath={activePath} />
 			<main>
 				{children}
 			</main>

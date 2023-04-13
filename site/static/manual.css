@@ -33,3 +33,11 @@ code {
 		color: #3a3a3a;
 	}
 }
+
+.table-of-contents a {
+	color: var(--text-color);
+}
+
+.table-of-contents a.active {
+	color: var(--accent-color);
+}
