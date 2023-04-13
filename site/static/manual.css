@@ -1,3 +1,7 @@
+html {
+	scrollbar-gutter: stable;
+}
+
 .manual-page {
 	display: flex;
 	justify-content: center;
@@ -56,9 +60,13 @@ code {
 	top: 0;
 	margin: 0;
 	padding: 0;
-	padding-top: 20px;
+	scrollbar-gutter: stable;
 	overflow-y: auto;
 	max-height: 100vh;
+}
+
+.table-of-contents > ul > li:first-child {
+	margin-top: 20px;
 }
 
 .table-of-contents a {
