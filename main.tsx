@@ -83,7 +83,7 @@ serve(async (request) => {
 		</html>,
 	);
 
-	return new Response(rendered, {
+	return new Response("<!DOCTYPE html>" + rendered, {
 		status,
 		headers: {
 			"content-type": "text/html; charset=utf-8",
