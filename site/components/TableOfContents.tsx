@@ -13,9 +13,7 @@ export function TableOfContents(options: TableOfContentsOptions) {
 	if (!options.index.children) return <nav></nav>;
 	return (
 		<nav class="table-of-contents">
-			<ul>
-				{getChildren(options)}
-			</ul>
+			<ItemsList {...options} />
 		</nav>
 	);
 }
@@ -31,18 +29,18 @@ function TableOfContentsItem(options: TableOfContentsOptions) {
 		children.push(options.index.title);
 	}
 	if (options.index.children) {
-		children.push(
-			<ul>
-				{getChildren(options)}
-			</ul>,
-		);
+		children.push(<ItemsList {...options} />);
 	}
 	return <li>{children}</li>;
 }
 
-function getChildren(options: TableOfContentsOptions) {
-	if (!options.index.children) return [];
-	return options.index.children.map((child) => {
-		return <TableOfContentsItem index={child} activePath={options.activePath} />;
-	});
+function ItemsList(options: TableOfContentsOptions) {
+	if (!options.index.children) return <ul></ul>;
+	return (
+		<ul>
+			{options.index.children.map((child) => {
+				return <TableOfContentsItem index={child} activePath={options.activePath} />;
+			})}
+		</ul>
+	);
 }

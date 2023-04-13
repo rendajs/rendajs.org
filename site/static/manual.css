@@ -41,3 +41,15 @@ code {
 .table-of-contents a.active {
 	color: var(--accent-color);
 }
+
+.table-of-contents ul {
+	list-style: none;
+}
+
+.table-of-contents > ul {
+	padding: 0;
+}
+
+.table-of-contents li {
+	margin: 0.3em 0;
+}
