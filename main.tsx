@@ -72,6 +72,7 @@ serve(async (request) => {
 	const rendered = renderFunction(
 		<html>
 			<head>
+				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				{cssUrls.map((url) => {
 					return <link rel="stylesheet" href={`/static/${url}`} type="text/css" />;
 				})}
