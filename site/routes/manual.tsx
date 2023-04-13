@@ -143,7 +143,11 @@ async function buildIndex(absoluteIndexPath: string) {
 	if (indexData.mainPage) {
 		const { title, destination } = await getIndexPageData(absoluteIndexPath, indexData.mainPage);
 		tableOfContentsIndex.title = title;
-		if (destination) tableOfContentsIndex.destination = destination;
+		if (destination) {
+			const dirname = path.dirname(absoluteIndexPath);
+			const dirDestination = resolveManualPathToUrl(dirname);
+			tableOfContentsIndex.destination = dirDestination;
+		}
 	}
 	if (indexData.pages) {
 		const children: TableOfContentsIndex[] = [];
