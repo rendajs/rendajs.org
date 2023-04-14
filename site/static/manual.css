@@ -26,17 +26,23 @@ html {
 	}
 }
 
-.manual-page .note {
-	background: #3472ff33;
-	border: 1px solid #3472ff4f;
+.manual-page aside {
 	padding: 10px;
 	border-radius: 5px;
 }
+.manual-page aside.note {
+	background: #3472ff33;
+	border: 1px solid #3472ff4f;
+}
+.manual-page aside.warning {
+	background: #ff343433;
+	border: 1px solid #ff34344f;
+}
 
-.manual-page .note > p:first-child {
+.manual-page aside > p:first-child {
 	margin-top: 0;
 }
-.manual-page .note > p:last-child {
+.manual-page aside > p:last-child {
 	margin-bottom: 0;
 }
 

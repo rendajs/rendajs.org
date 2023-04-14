@@ -3,7 +3,27 @@ import type { Content, Paragraph, PhrasingContent, Root } from "npm:@types/mdast
 import type { Node, Parent } from "npm:@types/unist@2.0.6";
 import type { map as mapSignature } from "npm:unist-util-map@3.1.3";
 
-const noteTypes = ["note"];
+interface NoteTypeConfig {
+	/** The token that is search for in the markdown to identify the note type. */
+	token: string;
+	/** The class that is added to the <aside> tag. */
+	class: string;
+	/** Bold text node that will be added to the start of the node. */
+	textPrefix: string;
+}
+
+const noteTypes: NoteTypeConfig[] = [
+	{
+		textPrefix: "Note",
+		class: "note",
+		token: "NOTE",
+	},
+	{
+		textPrefix: "Warning",
+		class: "warning",
+		token: "WARNING",
+	},
+];
 
 // github.com/syntax-tree/unist-util-map but with child replacement
 const map = ((tree, iteratee) => {
@@ -23,14 +43,14 @@ const map = ((tree, iteratee) => {
 	return preorder(tree, null, null) as Root;
 }) as typeof mapSignature;
 
-function createNoteNode(noteType: string, children: PhrasingContent[] = []) {
+function createNoteNode(classProperty: string, children: PhrasingContent[] = []) {
 	const node: Parent = {
 		type: "wrapper",
 		children,
 		data: {
 			hName: "aside",
 			hProperties: {
-				class: noteType,
+				class: classProperty,
 			},
 		},
 	};
@@ -49,14 +69,14 @@ export const remarkNotesPlugin: Plugin<[], Root, Root> = function () {
 			const [child, ...siblings] = castNode.children;
 			if (!("value" in child)) return node;
 			for (const noteType of noteTypes) {
-				const searchString = noteType.toUpperCase() + ": ";
+				const searchString = noteType.token + ": ";
 				if (child.value.startsWith(searchString)) {
 					const newValue = child.value.slice(searchString.length);
 					const newChild = {
 						type: child.type,
 						value: newValue,
 					};
-					return createNoteNode(noteType, [newChild, ...siblings]) as Content;
+					return createNoteNode(noteType.class, [newChild, ...siblings]) as Content;
 				}
 			}
 
@@ -83,14 +103,14 @@ export const remarkNotesPlugin: Plugin<[], Root, Root> = function () {
 					if (child.type == "paragraph") {
 						const textNode = child.children[0];
 						if ("value" in textNode) {
-							if (textNode.value == noteType.toUpperCase() + ":") {
+							if (textNode.value == noteType.token + ":") {
 								depth++;
 								addNode = false;
 								if (depth == 1) {
-									currentNoteNode = createNoteNode(noteType);
+									currentNoteNode = createNoteNode(noteType.class);
 									newChildren.push(currentNoteNode);
 								}
-							} else if (textNode.value == "END " + noteType.toUpperCase()) {
+							} else if (textNode.value == "END " + noteType.token) {
 								depth--;
 								addNode = false;
 								if (depth == 0) {
