@@ -13,16 +13,26 @@ interface ManualIndex {
 	pages?: string[];
 }
 
-const manualRepositoryDir = path.resolve(Deno.env.get("MANUAL_REPOSITORY_DIR") || "../manual");
-const manualContentDir = path.resolve(manualRepositoryDir, "manual/en");
 const INDEX_FILENAME = "index.yml";
+
+let manualContentDir: string | null = null;
+export function setRepositoryDir(dir: string) {
+	manualContentDir = path.resolve(dir, "manual/en");
+}
+
+function getContentDir() {
+	if (manualContentDir === null) {
+		throw new Error("Manual content directory not set");
+	}
+	return manualContentDir;
+}
 
 /**
  * Takes the absolute path to a file and converts it to a `/manual` url
  * that the user would have to visit in order to view this file.
  */
 function resolveManualPathToUrl(absoluteMarkdownPath: string) {
-	let relative = path.relative(manualContentDir, absoluteMarkdownPath);
+	let relative = path.relative(getContentDir(), absoluteMarkdownPath);
 	if (relative.endsWith(".md")) {
 		relative = relative.slice(0, -3);
 	}
@@ -186,8 +196,8 @@ export const manual: RouteHandler = {
 	}),
 	async handler(request, patternResult) {
 		const urlPath = patternResult.pathname.groups.path;
-		const resolveData = await resolveManualPath(manualContentDir, urlPath);
-		const index = await buildIndex(path.resolve(manualContentDir, INDEX_FILENAME));
+		const resolveData = await resolveManualPath(getContentDir(), urlPath);
+		const index = await buildIndex(path.resolve(getContentDir(), INDEX_FILENAME));
 
 		if (!resolveData) return getNotFound(index);
 		if (resolveData.redirectPath) {

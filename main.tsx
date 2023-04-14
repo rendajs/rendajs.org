@@ -6,11 +6,17 @@ import renderToStringPretty from "npm:preact-render-to-string@6.0.2/jsx";
 import { Header } from "./site/components/Header.tsx";
 import { landingPage } from "./site/routes/landingPage.tsx";
 import { staticHandler } from "./site/routes/static.ts";
-import { manual } from "./site/routes/manual.tsx";
+import { manual, setRepositoryDir } from "./site/routes/manual.tsx";
 import { notFoundHandler } from "./site/routes/404.tsx";
+import * as path from "$std/path/mod.ts";
+import { setCwd } from "https://deno.land/x/chdir_anywhere@v0.0.2/mod.js";
+setCwd();
 
 const port = parseInt(Deno.env.get("PORT") || "0", 10);
 const pretty = Deno.env.get("PRETTY") === "true";
+
+const manualRepositoryDir = path.resolve(Deno.env.get("MANUAL_REPOSITORY_DIR") || "../manual");
+setRepositoryDir(manualRepositoryDir);
 
 export interface RouteResult {
 	redirect?: string;
