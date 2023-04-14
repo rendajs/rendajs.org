@@ -1,5 +1,5 @@
 import type { Plugin } from "npm:unified@10.1.2";
-import type { Content, Paragraph, PhrasingContent, Root } from "npm:@types/mdast@3.0.11";
+import type { Content, Paragraph, PhrasingContent, Root, Strong, Text } from "npm:@types/mdast@3.0.11";
 import type { Node, Parent } from "npm:@types/unist@2.0.6";
 import type { map as mapSignature } from "npm:unist-util-map@3.1.3";
 
@@ -9,17 +9,17 @@ interface NoteTypeConfig {
 	/** The class that is added to the <aside> tag. */
 	class: string;
 	/** Bold text node that will be added to the start of the node. */
-	textPrefix: string;
+	prefixText: string;
 }
 
 const noteTypes: NoteTypeConfig[] = [
 	{
-		textPrefix: "Note",
+		prefixText: "Note:",
 		class: "note",
 		token: "NOTE",
 	},
 	{
-		textPrefix: "Warning",
+		prefixText: "Warning!",
 		class: "warning",
 		token: "WARNING",
 	},
@@ -57,8 +57,28 @@ function createNoteNode(classProperty: string, children: PhrasingContent[] = [])
 	return node;
 }
 
+function insertNoteText(prefixText: string, node: Node) {
+	if (!("children" in node)) return;
+	if (!Array.isArray(node.children)) return;
+	const strongChild: Strong = {
+		type: "strong",
+		children: [
+			{
+				type: "text",
+				value: prefixText,
+			},
+		],
+	};
+	const spaceChild: Text = {
+		type: "text",
+		value: " ",
+	};
+	node.children.unshift(strongChild, spaceChild);
+}
+
 export const remarkNotesPlugin: Plugin<[], Root, Root> = function () {
 	return (tree) => {
+		console.log(tree);
 		// Find all paragraphs that start with a note type, i.e:
 		// NOTE: This is a note
 		tree = map(tree, (node) => {
@@ -76,7 +96,9 @@ export const remarkNotesPlugin: Plugin<[], Root, Root> = function () {
 						type: child.type,
 						value: newValue,
 					};
-					return createNoteNode(noteType.class, [newChild, ...siblings]) as Content;
+					const noteNode = createNoteNode(noteType.class, [newChild, ...siblings]);
+					insertNoteText(noteType.prefixText, noteNode);
+					return noteNode as Content;
 				}
 			}
 
@@ -121,6 +143,9 @@ export const remarkNotesPlugin: Plugin<[], Root, Root> = function () {
 					}
 					if (addNode) {
 						if (currentNoteNode) {
+							if (currentNoteNode.children.length == 0) {
+								insertNoteText(noteType.prefixText, child);
+							}
 							currentNoteNode.children.push(child);
 						} else {
 							newChildren.push(child);
