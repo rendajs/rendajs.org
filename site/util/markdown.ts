@@ -6,6 +6,8 @@ import { unified } from "npm:unified@10.1.2";
 import gfm from "npm:remark-gfm@3.0.1";
 import remarkParse from "npm:remark-parse@10.0.1";
 import remarkStringify from "npm:remark-stringify@10.0.2";
+import rehypeSlug from "npm:rehype-slug@5.1.0";
+import rehypeAutolinkHeadings from "npm:rehype-autolink-headings@6.1.1";
 import remarkRehype from "npm:remark-rehype@10.1.0";
 import rehypeStringify from "npm:rehype-stringify@9.0.3";
 import { remarkNotesPlugin } from "./remarkNotesPlugin.ts";
@@ -28,6 +30,20 @@ const mdProcessor = unified()
 	.use(remarkRewriteUrls) // rewrite urls
 	.use(remarkNotesPlugin) // add support for hints
 	.use(remarkRehype) // convert mdast to html ast (hast)
+	.use(rehypeSlug) // add ids to headings
+	.use(rehypeAutolinkHeadings, { // add clickable anchors to headings
+		properties: {
+			class: ["heading-link"],
+		},
+		content() {
+			return [
+				{
+					type: "text",
+					value: "#",
+				},
+			];
+		},
+	})
 	.use(rehypeStringify); // convert hast to html string
 
 export interface MarkdownToHtmlOptions {

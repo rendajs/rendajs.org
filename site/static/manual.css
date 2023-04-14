@@ -40,6 +40,28 @@ html {
 	margin-bottom: 0;
 }
 
+.manual-page h1,
+.manual-page h2,
+.manual-page h3,
+.manual-page h4,
+.manual-page h5,
+.manual-page h6 {
+	position: relative;
+}
+
+.manual-page *:hover > .heading-link,
+.manual-page *:target > .heading-link {
+	opacity: 1;
+}
+
+.manual-page .heading-link {
+	position: absolute;
+	transform: translateX(-100%);
+	padding: 0 4px;
+	top: 0;
+	opacity: 0;
+}
+
 code {
 	background: #383838;
 	border-radius: 3px;

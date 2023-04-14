@@ -11,6 +11,10 @@
 	}
 }
 
+html {
+	scroll-behavior: smooth;
+}
+
 html, body {
 	background-color: var(--bg-color);
 	color: var(--text-color);
