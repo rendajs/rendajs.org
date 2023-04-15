@@ -65,8 +65,13 @@ header nav a {
 	margin: 15px 7px;
 }
 
-header nav svg {
+.github svg {
 	width: 20px;
 	height: 20px;
 	fill: currentColor;
+}
+
+.external-arrow svg {
+	stroke: currentColor;
+	transform: translateY(-50%);
 }

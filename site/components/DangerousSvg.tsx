@@ -1,3 +1,9 @@
-export function DangerousSvg({ svg }: { svg: string }) {
-	return <span dangerouslySetInnerHTML={{ __html: svg }}></span>;
+export function DangerousSvg({
+	svg,
+	classes,
+}: {
+	svg: string,
+	classes?: string,
+}) {
+	return <span class={classes} dangerouslySetInnerHTML={{ __html: svg }}></span>;
 }
