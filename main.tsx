@@ -3,6 +3,7 @@ import { isValidElement } from "$preact";
 import { serve, Status } from "$std/http/mod.ts";
 import { renderToString } from "npm:preact-render-to-string@6.0.2";
 import renderToStringPretty from "npm:preact-render-to-string@6.0.2/jsx";
+import { processString } from "npm:uglifycss@0.0.29";
 import { Header } from "./site/components/Header.tsx";
 import { landingPage } from "./site/routes/landingPage.tsx";
 import { staticHandler } from "./site/routes/static.ts";
@@ -17,6 +18,8 @@ const pretty = Deno.env.get("PRETTY") === "true";
 
 const manualRepositoryDir = path.resolve(Deno.env.get("MANUAL_REPOSITORY_DIR") || "../manual");
 setRepositoryDir(manualRepositoryDir);
+
+const dev = Deno.args.includes("--dev");
 
 export interface RouteResult {
 	redirect?: string;
@@ -79,15 +82,29 @@ serve(async (request) => {
 	if (!page) {
 		throw new Error("Assertion failed, no page was returned from handler.");
 	}
+
+	let styleComponents;
+	if (dev) {
+		styleComponents = cssUrls.map((url) => {
+			return <link rel="stylesheet" href={`/static/styles/${url}`} type="text/css" />;
+		});
+	} else {
+		let css = "";
+		for (const url of cssUrls) {
+			const file = await Deno.readTextFile(`./site/static/styles/${url}`);
+			css += file;
+		}
+		css = processString(css);
+		styleComponents = <style>{css}</style>;
+	}
+
 	const renderFunction = pretty ? renderToStringPretty : renderToString;
 	const rendered = renderFunction(
 		<html lang="en">
 			<head>
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<title>{pageTitle}</title>
-				{cssUrls.map((url) => {
-					return <link rel="stylesheet" href={`/static/${url}`} type="text/css" />;
-				})}
+				{styleComponents}
 			</head>
 			<body>
 				<Header />

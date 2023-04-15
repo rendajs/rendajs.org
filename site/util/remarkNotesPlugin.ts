@@ -78,7 +78,6 @@ function insertNoteText(prefixText: string, node: Node) {
 
 export const remarkNotesPlugin: Plugin<[], Root, Root> = function () {
 	return (tree) => {
-		console.log(tree);
 		// Find all paragraphs that start with a note type, i.e:
 		// NOTE: This is a note
 		tree = map(tree, (node) => {
