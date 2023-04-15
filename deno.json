@@ -17,6 +17,6 @@
 		}
 	},
 	"tasks": {
-		"dev": "deno run --watch --allow-env --allow-read --allow-net=0.0.0.0 main.tsx --dev"
+		"dev": "deno run --watch=site/static/ --allow-env --allow-read --allow-net=0.0.0.0 main.tsx --dev"
 	}
 }

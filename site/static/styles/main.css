@@ -30,12 +30,20 @@ a:hover {
 	opacity: 0.6;
 }
 
-header nav {
-	margin: 20px 0px;
-	text-align: right;
+header {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
 }
 
-header nav a {
+header a {
 	color: var(--text-color);
-	margin: 10px;
+	margin: 15px 7px;
+}
+
+header svg {
+	width: 20px;
+	height: 20px;
+	fill: currentColor;
+	vertical-align: middle;
 }
