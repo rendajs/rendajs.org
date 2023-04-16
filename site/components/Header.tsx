@@ -3,11 +3,21 @@ import { DangerousSvg } from "./DangerousSvg.tsx";
 import { getStaticFileText } from "../util/getStaticFile.ts";
 
 const githubSvg = await getStaticFileText("github.svg");
+const hamburgerSvg = await getStaticFileText("hamburger.svg");
 
-export function Header() {
+function HamburgerToggle() {
+	return (
+		<button id="hamburgerToggle">
+			<DangerousSvg svg={hamburgerSvg} />
+		</button>
+	);
+}
+
+export function Header({ showHamburger = false }) {
 	return (
 		<header>
 			<div class="header-content">
+				{showHamburger && <HamburgerToggle />}
 				<NavigationButton href="/" ariaLabel="Renda Home" classes="home-link">
 					<>
 						<img class="logo" src="/static/renda.svg" alt="Renda logo"></img> Renda

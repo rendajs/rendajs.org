@@ -26,6 +26,8 @@ export interface RouteResult {
 	page?: JSX.Element;
 	status?: Status;
 	cssUrls?: string[];
+	jsUrls?: string[];
+	showHamburger?: boolean;
 	pageTitle?: string;
 }
 export type RouteHandlerResult = JSX.Element | null | RouteResult | Response;
@@ -45,6 +47,8 @@ serve(async (request) => {
 	const cssUrls = [
 		"main.css",
 	];
+	const jsUrls = [];
+	let showHamburger = false;
 	let pageTitle = "Renda";
 	for (const handler of handlers) {
 		const result = handler.pattern.exec(request.url);
@@ -77,16 +81,22 @@ serve(async (request) => {
 			pageTitle = result.pageTitle;
 		}
 		cssUrls.push(...result.cssUrls || []);
+		jsUrls.push(...result.jsUrls || []);
+		showHamburger = result.showHamburger || false;
 		page = result.page;
 	}
 	if (!page) {
 		throw new Error("Assertion failed, no page was returned from handler.");
 	}
 
+	let scriptComponents;
 	let styleComponents;
 	if (dev) {
 		styleComponents = cssUrls.map((url) => {
 			return <link rel="stylesheet" href={`/static/styles/${url}`} type="text/css" />;
+		});
+		scriptComponents = jsUrls.map((url) => {
+			return <script defer src={`/static/scripts/${url}`} />;
 		});
 	} else {
 		let css = "";
@@ -96,6 +106,12 @@ serve(async (request) => {
 		}
 		css = processString(css);
 		styleComponents = <style>{css}</style>;
+
+		scriptComponents = [];
+		for (const url of jsUrls) {
+			const file = await Deno.readTextFile(`./site/static/scripts/${url}`);
+			scriptComponents.push(<script dangerouslySetInnerHTML={{ __html: file }}></script>);
+		}
 	}
 
 	const renderFunction = pretty ? renderToStringPretty : renderToString;
@@ -108,9 +124,10 @@ serve(async (request) => {
 			</head>
 			<body>
 				<div class="page">
-					<Header />
+					<Header {...{ showHamburger }} />
 					{page}
 				</div>
+				{scriptComponents}
 			</body>
 		</html>,
 	);

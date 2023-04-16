@@ -1,5 +1,5 @@
 import type { JSX } from "$preact";
-import type { RouteHandler, RouteHandlerResult } from "../../main.tsx";
+import type { RouteHandler, RouteHandlerResult, RouteResult } from "../../main.tsx";
 import { Markdown } from "../components/Markdown.tsx";
 import * as path from "$std/path/mod.ts";
 import * as yaml from "$std/yaml/mod.ts";
@@ -229,28 +229,33 @@ export const manual: RouteHandler = {
 		const markdownTitle = getTitle(markdown);
 		if (markdownTitle) pageTitle = markdownTitle + " - " + pageTitle;
 
-		return {
-			cssUrls: ["manual.css"],
-			pageTitle,
-			page: (
-				<ManualPage index={index} activePath={"/manual/" + urlPath}>
-					<Markdown markdown={markdown} rewriteUrlHook={rewriteUrlHook} />
-				</ManualPage>
-			),
-		};
+		const result = manualHandlerResult(
+			<ManualPage index={index} activePath={"/manual/" + urlPath}>
+				<Markdown markdown={markdown} rewriteUrlHook={rewriteUrlHook} />
+			</ManualPage>,
+		);
+		result.pageTitle = pageTitle;
+		return result;
 	},
 };
 
 function getNotFound(index: TableOfContentsIndex): RouteHandlerResult {
+	const result = manualHandlerResult(
+		<ManualPage index={index}>
+			<h1>404 - Not Found</h1>
+		</ManualPage>,
+	);
+	result.status = 404;
+	result.pageTitle = "Renda Manual - 404";
+	return result;
+}
+
+function manualHandlerResult(page: JSX.Element): RouteResult {
 	return {
-		status: 404,
 		cssUrls: ["manual.css"],
-		pageTitle: "Renda Manual - 404",
-		page: (
-			<ManualPage index={index}>
-				<h1>404 - Not Found</h1>
-			</ManualPage>
-		),
+		jsUrls: ["manual.js"],
+		showHamburger: true,
+		page,
 	};
 }
 
@@ -262,6 +267,7 @@ function ManualPage({ index, children, activePath }: {
 	return (
 		<div class="manual-page">
 			<TableOfContents index={index} activePath={activePath} />
+			<div class="table-of-contents-backdrop" />
 			<main>
 				{children}
 			</main>
