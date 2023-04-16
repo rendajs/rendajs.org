@@ -69,9 +69,6 @@ code {
 
 .table-of-contents {
 	min-width: max-content;
-}
-
-.table-of-contents > ul {
 	position: sticky;
 	top: 0;
 	margin: 0;
@@ -116,11 +113,6 @@ code {
 	transition: opacity 0.4s, visibility 0.4s;
 }
 
-.table-of-contents-backdrop.visible {
-	visibility: visible;
-	opacity: 0.2;
-}
-
 @media (max-width: 900px) {
 	.manual-page {
 		flex-direction: column;
@@ -163,5 +155,10 @@ code {
 
 	.table-of-contents.open {
 		transform: translateX(0);
+	}
+
+	.table-of-contents-backdrop.visible {
+		visibility: visible;
+		opacity: 0.2;
 	}
 }
