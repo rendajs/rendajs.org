@@ -1,13 +1,19 @@
 :root{
 	--bg-color: #1b1b1b;
 	--text-color: #eee;
-	--accent-color: #ff7600;
+	--accent-color: #ff4d00;
+	--accent-text-color: #ff7600;
+	--button-color: #464646;
+	--button-text-color: #eaeaea;
+	--default-border-radius: 5px;
 }
 @media(prefers-color-scheme: light){
 	:root{
 		--bg-color: #fff;
 		--text-color: #505050;
-		--accent-color: #dd2101;
+		--accent-text-color: #dd2101;
+		--button-color: #e7e7e7;
+		--button-text-color: #424242;
 	}
 }
 
@@ -22,9 +28,15 @@ html, body {
 	margin: 0;
 }
 
+.page {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+}
+
 a {
 	text-decoration: none;
-	color: var(--accent-color);
+	color: var(--accent-text-color);
 }
 a:hover {
 	opacity: 0.6;
@@ -44,6 +56,9 @@ header svg {
 
 .home-link {
 	font-weight: bold;
+	display: flex;
+	align-items: center;
+	gap: 10px;
 }
 
 .home-link svg {
@@ -68,10 +83,12 @@ header nav a {
 .github svg {
 	width: 20px;
 	height: 20px;
-	fill: currentColor;
+}
+
+.external-arrow {
+	margin-left: 3px;
 }
 
 .external-arrow svg {
-	stroke: currentColor;
 	transform: translateY(-50%);
 }

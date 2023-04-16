@@ -107,8 +107,10 @@ serve(async (request) => {
 				{styleComponents}
 			</head>
 			<body>
-				<Header />
-				{page}
+				<div class="page">
+					<Header />
+					{page}
+				</div>
 			</body>
 		</html>,
 	);

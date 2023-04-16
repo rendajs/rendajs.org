@@ -1,0 +1,49 @@
+.landing-page {
+	flex-grow: 1;
+	flex-shrink: 0;
+	display: grid;
+	place-content: center;
+}
+
+main {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+main img {
+	width: 200px;
+	height: 200px;
+}
+
+.actions {
+	display: flex;
+}
+
+.actions a {
+	white-space: nowrap;
+	background: var(--button-color);
+	border-radius: var(--default-border-radius);
+	color: var(--button-text-color);
+	padding: 10px 15px;
+	margin: 10px;
+}
+
+.actions a:hover {
+	opacity: 0.85;
+}
+
+a.main-button {
+	background-color: var(--accent-color);
+	color: white;
+}
+
+.right-arrow {
+	display: inline-block;
+	transition: transform 0.2s;
+	transform: translateX(-1px);
+}
+
+.actions a:hover .right-arrow {
+	transform: translateX(2px);
+}
