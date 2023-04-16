@@ -219,7 +219,7 @@ export const manual: RouteHandler = {
 		}
 
 		function rewriteUrlHook(url: string) {
-			if (!isRelativeUrl(url)) return url;
+			if (url.startsWith("#") || !isRelativeUrl(url)) return url;
 			const dirname = path.dirname(displayPath);
 			const linkPath = path.resolve(dirname, url);
 			return resolveManualPathToUrl(linkPath);
