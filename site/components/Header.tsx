@@ -10,7 +10,7 @@ export function Header() {
 			<div class="header-content">
 				<NavigationButton href="/" ariaLabel="Renda Home" classes="home-link">
 					<>
-						<img class="logo" src="/static/renda.svg"></img> Renda
+						<img class="logo" src="/static/renda.svg" alt="Renda logo"></img> Renda
 					</>
 				</NavigationButton>
 				<nav>

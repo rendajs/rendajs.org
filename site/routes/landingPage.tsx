@@ -15,7 +15,7 @@ export const landingPage: RouteHandler = {
 			page: (
 				<div class="landing-page">
 					<main>
-						<img src="/static/renda.svg" />
+						<img src="/static/renda.svg" alt="Renda logo" />
 						<div class="actions">
 							<NavigationButton classes="main-button" href="https://renda.studio">Launch Studio</NavigationButton>
 							<NavigationButton href="/manual">
