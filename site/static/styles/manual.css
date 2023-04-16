@@ -3,7 +3,7 @@
 	justify-content: space-between;
 	gap: 30px;
 	position: relative;
-	margin: auto;
+	margin: 0 auto;
 	padding: 0 20px;
 	max-width: 1000px;
 }
@@ -103,6 +103,7 @@ code {
 
 #hamburgerToggle {
 	display: none;
+	justify-self: left;
 }
 
 .table-of-contents-backdrop {

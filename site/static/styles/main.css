@@ -48,6 +48,7 @@ a:hover {
 	justify-content: space-between;
 	margin: auto;
 	padding: 0 20px;
+	height: 3rem;
 }
 
 header svg {
@@ -58,10 +59,9 @@ header svg {
 	font-weight: bold;
 	display: flex;
 	align-items: center;
-	gap: 10px;
 }
 
-.home-link svg {
+.home-link img {
 	width: 50px;
 	height: 50px;
 }
@@ -91,4 +91,22 @@ header nav a {
 
 .external-arrow svg {
 	transform: translateY(-50%);
+}
+
+@media (max-width: 900px) {
+	.home-link {
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	.home-link span {
+		display: none;
+	}
+}
+
+@media (max-width: 500px) {
+	header nav {
+		display: none;
+	}
 }

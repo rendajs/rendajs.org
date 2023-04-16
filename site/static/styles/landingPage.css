@@ -18,6 +18,8 @@ main img {
 
 .actions {
 	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
 }
 
 .actions a {

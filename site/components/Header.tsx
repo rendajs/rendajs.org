@@ -14,13 +14,16 @@ function HamburgerToggle() {
 }
 
 export function Header({ showHamburger = false }) {
+	const divClassNames = ["header-content"];
+	if (showHamburger) divClassNames.push("has-hamburger");
 	return (
 		<header>
-			<div class="header-content">
+			<div className={divClassNames.join(" ")}>
 				{showHamburger && <HamburgerToggle />}
 				<NavigationButton href="/" ariaLabel="Renda Home" classes="home-link">
 					<>
-						<img class="logo" src="/static/renda.svg" alt="Renda logo"></img> Renda
+						<img class="logo" src="/static/renda.svg" alt="Renda logo"></img>
+						<span>Renda</span>
 					</>
 				</NavigationButton>
 				<nav>
