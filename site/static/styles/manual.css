@@ -71,11 +71,14 @@ code {
 	min-width: max-content;
 	position: sticky;
 	top: 0;
-	margin: 0;
-	padding: 0;
 	scrollbar-gutter: stable;
 	overflow-y: auto;
 	max-height: 100vh;
+}
+
+.table-of-contents > ul {
+	margin: 0;
+	padding: 0;
 }
 
 .table-of-contents > ul > li:first-child {
