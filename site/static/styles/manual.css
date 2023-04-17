@@ -11,6 +11,11 @@
 .manual-page > main {
 	flex-grow: 1;
 	margin-bottom: 20px;
+	/*
+	 * This is required to prevent code blocks from overflowing the page.
+	 * https://stackoverflow.com/questions/36230944/prevent-flex-items-from-overflowing-a-container
+	 */
+	min-width: 0;
 }
 
 .manual-page aside {
@@ -60,10 +65,23 @@ code {
 	border-radius: 3px;
 	padding: 0.1em 0.4em;
 }
+
+pre code {
+	display: block;
+	padding: 10px;
+	border-radius: var(--default-border-radius);
+	overflow-x: auto;
+	tab-size: 4;
+	background: #121212;
+}
+
 @media (prefers-color-scheme: light) {
 	code {
 		background: #e5e5e5;
 		color: #3a3a3a;
+	}
+	pre code {
+		background: #f5f5f5;
 	}
 }
 

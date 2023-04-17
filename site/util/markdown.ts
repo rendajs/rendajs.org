@@ -1,4 +1,4 @@
-import type { Plugin } from "npm:unified@10.1.2";
+import type { Plugin, Transformer } from "npm:unified@10.1.2";
 import type { Content, Root } from "npm:@types/mdast@3.0.11";
 import { visit } from "npm:unist-util-visit@4.1.2";
 import find from "npm:unist-util-find@1.0.2";
@@ -10,8 +10,11 @@ import rehypeSlug from "npm:rehype-slug@5.1.0";
 import rehypeAutolinkHeadings from "npm:rehype-autolink-headings@6.1.1";
 import remarkRehype from "npm:remark-rehype@10.1.0";
 import rehypeStringify from "npm:rehype-stringify@9.0.3";
+import rehypeHighlight from "https://cdn.jsdelivr.net/npm/rehype-highlight@6.0.0/+esm";
 import { remarkNotesPlugin } from "./remarkNotesPlugin.ts";
 import { assert } from "$std/testing/asserts.ts";
+
+const castRehypeHighlight = rehypeHighlight as unknown as () => Transformer<Root, Root>;
 
 let currentRewriteUrlHook = (url: string) => url;
 
@@ -44,6 +47,7 @@ const mdProcessor = unified()
 			];
 		},
 	})
+	.use(castRehypeHighlight) // highlight code blocks
 	.use(rehypeStringify); // convert hast to html string
 
 export interface MarkdownToHtmlOptions {

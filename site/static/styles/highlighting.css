@@ -1,0 +1,59 @@
+.hljs-keyword {
+	color: var(--accent-color);
+}
+
+.hljs-comment {
+	color: #868686;
+}
+
+.hljs-variable {
+	color: #fff0d4;
+}
+
+.hljs-title {
+	color: #e3a46e;
+}
+
+.hljs-attr,
+.hljs-property,
+.hljs-params {
+	color: #ffdf81;
+}
+
+.hljs-string {
+	color: #f5af44;
+}
+
+.hljs-number,
+.hljs-regexp {
+	color: #8fc5df;
+}
+
+@media (prefers-color-scheme: light) {
+	.hljs-comment {
+		color: #585858;
+	}
+
+	.hljs-variable {
+		color: #5c3c00;
+	}
+
+	.hljs-title {
+		color: #994600;
+	}
+
+	.hljs-attr,
+	.hljs-property,
+	.hljs-params {
+		color: #ad7100;
+	}
+
+	.hljs-string {
+		color: #d13100;
+	}
+
+	.hljs-number,
+	.hljs-regexp {
+		color: #23556c;
+	}
+}

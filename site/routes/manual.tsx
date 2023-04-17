@@ -251,8 +251,9 @@ function getNotFound(index: TableOfContentsIndex): RouteHandlerResult {
 }
 
 function manualHandlerResult(page: JSX.Element): RouteResult {
+	// TODO: Remove highlighting.css when not needed to shave of 1kb
 	return {
-		cssUrls: ["manual.css"],
+		cssUrls: ["manual.css", "highlighting.css"],
 		jsUrls: ["manual.js"],
 		showHamburger: true,
 		page,
