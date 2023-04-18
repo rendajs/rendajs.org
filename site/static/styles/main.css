@@ -1,18 +1,18 @@
 :root{
-	--bg-color: #1b1b1b;
+	--bg-color: #160e0a;
 	--text-color: #eee;
 	--accent-color: #ff4d00;
 	--accent-text-color: #ff7600;
-	--button-color: #464646;
+	--button-color: #443a35;
 	--button-text-color: #eaeaea;
 	--default-border-radius: 5px;
 }
 @media(prefers-color-scheme: light){
 	:root{
-		--bg-color: #fff;
+		--bg-color: #fff1e9;
 		--text-color: #505050;
 		--accent-text-color: #dd2101;
-		--button-color: #e7e7e7;
+		--button-color: #ffdcd4;
 		--button-text-color: #424242;
 	}
 }

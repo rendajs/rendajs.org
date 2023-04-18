@@ -72,12 +72,12 @@ pre code {
 	border-radius: var(--default-border-radius);
 	overflow-x: auto;
 	tab-size: 4;
-	background: #121212;
+	background: #120b0b;
 }
 
 @media (prefers-color-scheme: light) {
 	code {
-		background: #e5e5e5;
+		background: #f7e1d6;
 		color: #3a3a3a;
 	}
 	pre code {
@@ -168,7 +168,7 @@ pre code {
 		left: 0;
 		width: 250px;
 		padding: 0 20px;
-		box-shadow: 0 0px 20px #00000029;
+		box-shadow: 0 0px 20px #0000008a;
 		height: 100%;
 		background: var(--bg-color);
 		z-index: 100;
@@ -185,6 +185,16 @@ pre code {
 
 	.table-of-contents-backdrop.visible {
 		visibility: visible;
-		opacity: 0.2;
+		opacity: 0.4;
+	}
+
+	@media (prefers-color-scheme: light) {
+		.table-of-contents {
+			box-shadow: 0 0px 20px #00000029;
+		}
+
+		.table-of-contents-backdrop.visible {
+			opacity: 0.2;
+		}
 	}
 }
