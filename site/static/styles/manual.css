@@ -38,6 +38,11 @@
 	margin-bottom: 0;
 }
 
+.manual-page > main > footer {
+	display: flex;
+	justify-content: space-between;
+}
+
 .manual-page h1,
 .manual-page h2,
 .manual-page h3,

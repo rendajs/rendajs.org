@@ -1,7 +1,7 @@
 export interface TableOfContentsIndex {
 	title: string;
 	destination?: string;
-	children?: (TableOfContentsIndex)[];
+	children?: TableOfContentsIndex[];
 }
 
 interface TableOfContentsOptions {

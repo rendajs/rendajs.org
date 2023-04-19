@@ -1,9 +1,6 @@
 import type { RouteHandler } from "../../main.tsx";
-import { DangerousSvg } from "../components/DangerousSvg.tsx";
+import { NavigationArrow } from "../components/NavigationArrow.tsx";
 import { NavigationButton } from "../components/NavigationButton.tsx";
-import { getStaticFileText } from "../util/getStaticFile.ts";
-
-const rightArrowSvg = await getStaticFileText("rightArrow.svg");
 
 export const landingPage: RouteHandler = {
 	pattern: new URLPattern({
@@ -17,10 +14,10 @@ export const landingPage: RouteHandler = {
 					<main>
 						<img src="/static/renda.svg" alt="Renda logo" />
 						<div class="actions">
-							<NavigationButton classes="main-button" href="https://renda.studio">Launch Studio</NavigationButton>
-							<NavigationButton href="/manual">
+							<NavigationButton classes="navigation-button main-button" href="https://renda.studio">Launch Studio</NavigationButton>
+							<NavigationButton classes="navigation-button" href="/manual">
 								<>
-									Get Started <DangerousSvg classes="right-arrow" svg={rightArrowSvg} />
+									Get Started <NavigationArrow direction="right" />
 								</>
 							</NavigationButton>
 						</div>

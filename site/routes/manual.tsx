@@ -6,6 +6,9 @@ import * as yaml from "$std/yaml/mod.ts";
 import { isRelativeUrl } from "../util/isRelativeUrl.ts";
 import { TableOfContents, TableOfContentsIndex } from "../components/TableOfContents.tsx";
 import { getTitle } from "../util/markdown.ts";
+import { NavigationButton } from "../components/NavigationButton.tsx";
+import { NavigationArrow } from "../components/NavigationArrow.tsx";
+import { findNextDestination, findPreviousDestination } from "../util/tableOfContents/navigation.ts";
 
 interface ManualIndex {
 	title?: string;
@@ -229,9 +232,33 @@ export const manual: RouteHandler = {
 		const markdownTitle = getTitle(markdown);
 		if (markdownTitle) pageTitle = markdownTitle + " - " + pageTitle;
 
+		const activePath = "/manual/" + urlPath;
+		const previousPage = findPreviousDestination(index, activePath);
+		const nextPage = findNextDestination(index, activePath);
+
 		const result = manualHandlerResult(
-			<ManualPage index={index} activePath={"/manual/" + urlPath}>
+			<ManualPage index={index} activePath={activePath}>
 				<Markdown markdown={markdown} rewriteUrlHook={rewriteUrlHook} />
+				<footer>
+					{previousPage
+						? (
+							<NavigationButton classes="navigation-button" href={previousPage}>
+								<>
+									<NavigationArrow direction="left" /> Previous
+								</>
+							</NavigationButton>
+						)
+						// Add a div to make the next page shift to the right due to the flexbox parent
+						: <div></div>}
+
+					{nextPage && (
+						<NavigationButton classes="navigation-button" href={nextPage}>
+							<>
+								Next <NavigationArrow direction="right" />
+							</>
+						</NavigationButton>
+					)}
+				</footer>
 			</ManualPage>,
 		);
 		result.pageTitle = pageTitle;
@@ -262,7 +289,7 @@ function manualHandlerResult(page: JSX.Element): RouteResult {
 
 function ManualPage({ index, children, activePath }: {
 	index: TableOfContentsIndex;
-	children: JSX.Element;
+	children: JSX.Element | JSX.Element[];
 	activePath?: string;
 }) {
 	return (

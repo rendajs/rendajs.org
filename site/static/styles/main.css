@@ -85,6 +85,37 @@ header nav a {
 	height: 20px;
 }
 
+.navigation-button {
+	white-space: nowrap;
+	background: var(--button-color);
+	border-radius: var(--default-border-radius);
+	color: var(--button-text-color);
+	padding: 10px 15px;
+	margin: 10px;
+}
+
+.navigation-button:hover {
+	opacity: 0.85;
+}
+
+.navigation-arrow {
+	display: inline-block;
+	transition: transform 0.2s;
+}
+.navigation-arrow.left {
+	transform: translateX(1px);
+}
+.navigation-arrow.right {
+	transform: translateX(-1px);
+}
+.navigation-button:hover .navigation-arrow.left {
+	transform: translateX(-2px);
+}
+.navigation-button:hover .navigation-arrow.right {
+	transform: translateX(2px);
+}
+
+
 .external-arrow {
 	margin-left: 3px;
 }
