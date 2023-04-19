@@ -16,6 +16,10 @@
 	 * https://stackoverflow.com/questions/36230944/prevent-flex-items-from-overflowing-a-container
 	 */
 	min-width: 0;
+	/**
+	  * Prevent extremely long words from making the page scrollable on the x axis.
+	  */
+	overflow-wrap: anywhere;
 }
 
 .manual-page aside {
@@ -148,10 +152,6 @@ pre code {
 }
 
 @media (max-width: 900px) {
-	.manual-page {
-		flex-direction: column;
-	}
-
 	.manual-page > main {
 		max-width: 600px;
 	}
