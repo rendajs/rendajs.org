@@ -240,24 +240,25 @@ export const manual: RouteHandler = {
 			<ManualPage index={index} activePath={activePath}>
 				<Markdown markdown={markdown} rewriteUrlHook={rewriteUrlHook} />
 				<footer>
-					{previousPage
-						? (
-							<NavigationButton classes="navigation-button" href={previousPage}>
+					<div class="page-button">
+						{previousPage &&
+							(
+								<NavigationButton classes="navigation-button" href={previousPage}>
+									<>
+										<NavigationArrow direction="left" /> Previous
+									</>
+								</NavigationButton>
+							)}
+					</div>
+					<div class="page-button">
+						{nextPage && (
+							<NavigationButton classes="navigation-button" href={nextPage}>
 								<>
-									<NavigationArrow direction="left" /> Previous
+									Next <NavigationArrow direction="right" />
 								</>
 							</NavigationButton>
-						)
-						// Add a div to make the next page shift to the right due to the flexbox parent
-						: <div></div>}
-
-					{nextPage && (
-						<NavigationButton classes="navigation-button" href={nextPage}>
-							<>
-								Next <NavigationArrow direction="right" />
-							</>
-						</NavigationButton>
-					)}
+						)}
+					</div>
 				</footer>
 			</ManualPage>,
 		);

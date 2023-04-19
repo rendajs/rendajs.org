@@ -40,7 +40,14 @@
 
 .manual-page > main > footer {
 	display: flex;
-	justify-content: space-between;
+	flex-wrap: wrap;
+}
+.page-button {
+	flex-grow: 1;
+	display: flex;
+}
+.page-button:last-child {
+	justify-content: flex-end;
 }
 
 .manual-page h1,
