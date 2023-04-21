@@ -120,7 +120,7 @@ serve(async (request) => {
 			<head>
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<title>{pageTitle}</title>
-				<link rel="icon" href="/static/favicon.svg" sizes="any" />
+				<link rel="icon" href="/static/renda-circle.svg" sizes="any" />
 				{styleComponents}
 			</head>
 			<body>
