@@ -114,7 +114,7 @@ async function resolveManualPath(basePath: string, relativePath: string): Promis
 			if (result && result.displayPath) {
 				return {
 					dirPath: resolved,
-					redirectPath: result.displayPath,
+					redirectPath: result.dirPath || result.displayPath,
 				};
 			}
 			return null;
