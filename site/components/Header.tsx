@@ -1,6 +1,7 @@
 import { NavigationButton } from "./NavigationButton.tsx";
 import { DangerousSvg } from "./DangerousSvg.tsx";
 import { getStaticFileText } from "../util/getStaticFile.ts";
+import { Logo } from "./Logo.tsx";
 
 const githubSvg = await getStaticFileText("github.svg");
 const hamburgerSvg = await getStaticFileText("hamburger.svg");
@@ -22,7 +23,7 @@ export function Header({ showHamburger = false }) {
 				{showHamburger && <HamburgerToggle />}
 				<NavigationButton href="/" ariaLabel="Renda Home" classes="home-link">
 					<>
-						<img class="logo" src="/static/renda.svg" alt="Renda logo"></img>
+						<Logo />
 						<span>Renda</span>
 					</>
 				</NavigationButton>

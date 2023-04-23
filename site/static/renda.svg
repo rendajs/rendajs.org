@@ -57,7 +57,7 @@
         Z" />
     </mask>
   </defs>
-  <g transform="translate(50 50)">
+  <g transform="translate(50 53.2)">
     <use href="#ear" width="30" height="30" transform="translate(-38, -29)" />
     <use href="#ear" width="30" height="30" transform="translate(38, -29) scale(-1, 1)" />
     <g mask="url(#baseShape)">
