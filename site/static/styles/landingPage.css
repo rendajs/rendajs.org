@@ -32,4 +32,8 @@ a.main-button {
 	.home-link {
 		display: none;
 	}
+
+	.header-content {
+		justify-content: right;
+	}
 }
