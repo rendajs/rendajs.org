@@ -8,7 +8,7 @@ const hamburgerSvg = await getStaticFileText("hamburger.svg");
 
 function HamburgerToggle() {
 	return (
-		<button id="hamburgerToggle">
+		<button id="hamburgerToggle" type="button" title="Toggle table of contents">
 			<DangerousSvg svg={hamburgerSvg} />
 		</button>
 	);
