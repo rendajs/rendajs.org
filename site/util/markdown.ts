@@ -10,7 +10,7 @@ import rehypeSlug from "npm:rehype-slug@5.1.0";
 import rehypeAutolinkHeadings from "npm:rehype-autolink-headings@6.1.1";
 import remarkRehype from "npm:remark-rehype@10.1.0";
 import rehypeStringify from "npm:rehype-stringify@9.0.3";
-import {toString as mdastToString} from "npm:mdast-util-to-string@3.2.0";
+import { toString as mdastToString } from "npm:mdast-util-to-string@3.2.0";
 import rehypeHighlight from "https://cdn.jsdelivr.net/npm/rehype-highlight@6.0.0/+esm";
 import { remarkNotesPlugin } from "./remarkNotesPlugin.ts";
 import { assert } from "$std/testing/asserts.ts";
@@ -86,5 +86,5 @@ export function getMarkdownData(markdown: string) {
 	return {
 		title: data.firstHeading as string,
 		text: data.firstParagraph as string,
-	}
+	};
 }
