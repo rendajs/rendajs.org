@@ -29,6 +29,7 @@ export interface RouteResult {
 	jsUrls?: string[];
 	showHamburger?: boolean;
 	pageTitle?: string;
+	pageDescription?: string;
 }
 export type RouteHandlerResult = JSX.Element | null | RouteResult | Response;
 
@@ -50,6 +51,7 @@ serve(async (request) => {
 	const jsUrls = [];
 	let showHamburger = false;
 	let pageTitle = "Renda";
+	let pageDescription = "Renda is a modern rendering engine built with the web in mind. You can use it to create games, interactive experiences, or anything that requires 3d graphics.";
 	for (const handler of handlers) {
 		const result = handler.pattern.exec(request.url);
 		if (result) {
@@ -74,12 +76,9 @@ serve(async (request) => {
 				},
 			});
 		}
-		if (result.status) {
-			status = result.status;
-		}
-		if (result.pageTitle) {
-			pageTitle = result.pageTitle;
-		}
+		if (result.status) status = result.status;
+		if (result.pageTitle) pageTitle = result.pageTitle;
+		if (result.pageDescription) pageDescription = result.pageDescription;
 		cssUrls.push(...result.cssUrls || []);
 		jsUrls.push(...result.jsUrls || []);
 		showHamburger = result.showHamburger || false;
@@ -121,6 +120,7 @@ serve(async (request) => {
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<title>{pageTitle}</title>
 				<link rel="icon" href="/static/renda-circle.svg" sizes="any" />
+				<meta name="description" content={pageDescription} />
 				{styleComponents}
 			</head>
 			<body>

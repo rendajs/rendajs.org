@@ -10,6 +10,7 @@ import rehypeSlug from "npm:rehype-slug@5.1.0";
 import rehypeAutolinkHeadings from "npm:rehype-autolink-headings@6.1.1";
 import remarkRehype from "npm:remark-rehype@10.1.0";
 import rehypeStringify from "npm:rehype-stringify@9.0.3";
+import {toString as mdastToString} from "npm:mdast-util-to-string@3.2.0";
 import rehypeHighlight from "https://cdn.jsdelivr.net/npm/rehype-highlight@6.0.0/+esm";
 import { remarkNotesPlugin } from "./remarkNotesPlugin.ts";
 import { assert } from "$std/testing/asserts.ts";
@@ -63,22 +64,27 @@ export function markdownToHtml({
 	return mdProcessor.processSync(markdown).toString();
 }
 
-const remarkFilterFirstHeader: Plugin<[], Root, Root> = function () {
-	return (tree) => {
-		const node = find(tree, (node: Content) => node.type == "heading" && node.depth == 1);
-		const newRoot: Root = {
-			type: "root",
-			children: node?.children || [],
-		};
-		return newRoot;
+/**
+ * Plugin that extracts data from a markdown file such as the first heading, and the first paragraph.
+ */
+const remarkExtractData: Plugin<[], Root, Root> = function () {
+	return (tree, file) => {
+		const firstHeading = find(tree, (node: Content) => node.type == "heading" && node.depth == 1);
+		const firstParagraph = find(tree, (node: Content) => node.type == "paragraph");
+		file.data.firstHeading = mdastToString(firstHeading);
+		file.data.firstParagraph = mdastToString(firstParagraph).replaceAll("\n", " ");
 	};
 };
 
 const getTitleProcessor = unified()
 	.use(remarkParse)
-	.use(remarkFilterFirstHeader)
+	.use(remarkExtractData)
 	.use(remarkStringify);
 
-export function getTitle(markdown: string) {
-	return getTitleProcessor.processSync(markdown).toString();
+export function getMarkdownData(markdown: string) {
+	const data = getTitleProcessor.processSync(markdown).data;
+	return {
+		title: data.firstHeading as string,
+		text: data.firstParagraph as string,
+	}
 }

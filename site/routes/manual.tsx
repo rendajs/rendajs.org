@@ -5,7 +5,7 @@ import * as path from "$std/path/mod.ts";
 import * as yaml from "$std/yaml/mod.ts";
 import { isRelativeUrl } from "../util/isRelativeUrl.ts";
 import { TableOfContents, TableOfContentsIndex } from "../components/TableOfContents.tsx";
-import { getTitle } from "../util/markdown.ts";
+import { getMarkdownData } from "../util/markdown.ts";
 import { NavigationButton } from "../components/NavigationButton.tsx";
 import { NavigationArrow } from "../components/NavigationArrow.tsx";
 import { findNextDestination, findPreviousDestination } from "../util/tableOfContents/navigation.ts";
@@ -140,7 +140,7 @@ async function getIndexPageData(absoluteIndexPath: string, relativeMarkdownPath:
 			title = "NOT FOUND";
 		}
 		if (markdown) {
-			title = getTitle(markdown);
+			title = getMarkdownData(markdown).title;
 			destination = resolveManualPathToUrl(resolveResult.displayPath);
 		}
 	}
@@ -229,8 +229,8 @@ export const manual: RouteHandler = {
 		}
 
 		let pageTitle = "Renda Manual";
-		const markdownTitle = getTitle(markdown);
-		if (markdownTitle) pageTitle = markdownTitle + " - " + pageTitle;
+		const markdownData = getMarkdownData(markdown);
+		if (markdownData.title) pageTitle = markdownData.title + " - " + pageTitle;
 
 		const activePath = "/manual/" + urlPath;
 		const previousPage = findPreviousDestination(index, activePath);
@@ -263,6 +263,7 @@ export const manual: RouteHandler = {
 			</ManualPage>,
 		);
 		result.pageTitle = pageTitle;
+		result.pageDescription = markdownData.text;
 		return result;
 	},
 };
