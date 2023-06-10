@@ -13,7 +13,6 @@ import * as path from "$std/path/mod.ts";
 import { setCwd } from "https://deno.land/x/chdir_anywhere@v0.0.2/mod.js";
 setCwd();
 
-const port = parseInt(Deno.env.get("PORT") || "0", 10);
 const pretty = Deno.env.get("PRETTY") === "true";
 
 const manualRepositoryDir = path.resolve(Deno.env.get("MANUAL_REPOSITORY_DIR") || "../manual");
@@ -43,7 +42,7 @@ handlers.add(landingPage);
 handlers.add(staticHandler);
 handlers.add(manual);
 
-serve(async (request) => {
+async function handler(request: Request) {
 	let page = null;
 	const cssUrls = [
 		"main.css",
@@ -139,6 +138,23 @@ serve(async (request) => {
 			"content-type": "text/html; charset=utf-8",
 		},
 	});
-}, {
-	port,
-});
+}
+
+const portEnv = parseInt(Deno.env.get("PORT") || "0", 10);
+
+let port = 8080;
+if (portEnv) port = portEnv;
+
+try {
+	await serve(handler, { port });
+} catch (e) {
+	if (e instanceof Deno.errors.AddrInUse && !portEnv) {
+		console.warn(`Port ${port} seems to be taken, retrying on a random port.
+You can also manually specify one with the \`PORT\` environment variable, for example:
+    PORT=8081 deno task dev
+`);
+		await serve(handler, { port: 0 });
+	} else {
+		throw e;
+	}
+}
