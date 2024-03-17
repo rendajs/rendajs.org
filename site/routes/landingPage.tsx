@@ -16,7 +16,7 @@ export const landingPage: RouteHandler = {
 						<Logo />
 						<div class="actions">
 							<NavigationButton classes="navigation-button main-button" href="https://renda.studio">Launch Studio</NavigationButton>
-							<NavigationButton classes="navigation-button" href="/manual">
+							<NavigationButton classes="navigation-button" href="/manual/getting-started">
 								<>
 									Get Started <NavigationArrow direction="right" />
 								</>
